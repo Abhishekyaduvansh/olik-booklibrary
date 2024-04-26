@@ -1,13 +1,16 @@
 package com.assessment.booklibrary.Services;
 
+import com.assessment.booklibrary.dataaccess.RentalRequest;
 import com.assessment.booklibrary.dataaccess.entities.Book;
 import com.assessment.booklibrary.dataaccess.entities.Rental;
 import com.assessment.booklibrary.dataaccess.repositories.BookRepository;
 import com.assessment.booklibrary.dataaccess.repositories.RentalRepository;
+import com.assessment.booklibrary.exception.BookServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +39,12 @@ public class RentalService {
     // 4. update book isAvail = false
     // 5. save rental
     // 6. save book
-    public Rental createRental(String bookTitle, String renterName) {
+    public Rental createRental(RentalRequest request) throws BookServiceException {
+        String bookTitle = request.getBookName();
         List<Book> books = bookRepository.findAllBooksByTitleContains(bookTitle);
         if (books.isEmpty()) {
-            throw new RuntimeException("No books found with title containing " + bookTitle);
+            throw new BookServiceException("No books found with title containing " + bookTitle);
         }
-
         List<Book> availableBooks = books.stream()
                 .filter(Book::isAvail)
                 .toList();
@@ -52,11 +55,11 @@ public class RentalService {
 
         // For simplicity, assume we choose the first available book
         Book book = availableBooks.get(0);
-
         Rental rental = new Rental();
         rental.setBook(book);
-        rental.setRenterName(renterName);
-        rental.setRentalDate(LocalDate.now());
+        rental.setRenterName(request.getRenterName());
+        rental.setRentalDate(LocalDateTime.now());
+        rental.setReturnDate(LocalDateTime.now().plusDays(14));
         book.setAvail(false);
         rental = rentalRepository.save(rental);
         bookRepository.save(book);
@@ -69,14 +72,11 @@ public class RentalService {
     // 3. save rental record
     // 4. save book
     public void returnBook(Long bookId) {
-
         Rental rental = rentalRepository.findByBookId(bookId);
-
         if (rental == null) {
             throw new RuntimeException("No rental record found for book with ID: " + bookId);
         }
-
-        rental.setReturnDate(LocalDate.now());
+        rental.setReturnDate(LocalDateTime.now());
         Book book = rental.getBook();
         book.setAvail(true);
         rentalRepository.save(rental);

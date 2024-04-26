@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.assessment.booklibrary.utils.Constants.API_VERSION;
+import static com.assessment.booklibrary.utils.Constants.AUTHOR_SERVICE;
+
 @RestController
-@RequestMapping("/api/v1/authors")
+@RequestMapping(API_VERSION + AUTHOR_SERVICE)
 public class AuthorController {
     @Autowired
     private AuthorService authorService;

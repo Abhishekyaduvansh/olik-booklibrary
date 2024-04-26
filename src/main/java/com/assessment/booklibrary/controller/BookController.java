@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.assessment.booklibrary.utils.Constants.API_VERSION;
+import static com.assessment.booklibrary.utils.Constants.BOOK_SERVICE;
+
 @RestController
-@RequestMapping("/api/v1/books")
+@RequestMapping(API_VERSION + BOOK_SERVICE)
 public class BookController {
     @Autowired
     private BookService bookService;

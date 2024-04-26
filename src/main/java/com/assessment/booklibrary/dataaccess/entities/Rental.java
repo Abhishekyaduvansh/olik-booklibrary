@@ -2,8 +2,10 @@ package com.assessment.booklibrary.dataaccess.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 //id, bookId, renterName, rentalDate, and returnDate.
 @Entity
@@ -19,6 +21,7 @@ public class Rental {
     @JoinColumn(name = "book_id") // Define the foreign key column
     private Book book;
     private String renterName;
-    private LocalDate rentalDate;
-    private LocalDate returnDate;
+    @CreatedDate
+    private LocalDateTime rentalDate;
+    private LocalDateTime returnDate;
 }

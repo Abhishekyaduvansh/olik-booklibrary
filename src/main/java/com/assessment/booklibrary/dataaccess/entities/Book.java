@@ -33,7 +33,7 @@ public class Book {
     @Max(value = 2024, message = "Publication year is invalid")
     private int publicationYear;
 
-    private boolean isAvail;
+    private boolean isAvail = true;
 
     @Min(value = 0, message = "Author Id is mandatory")
     private Long authorId;

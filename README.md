@@ -23,4 +23,7 @@ This application runs on port 8081 and to test APIs open browser and go to follo
     http://localhost:8081/swagger-ui.html
 
 
-There are unit test cases written in test package to call APIs and verify.
+Added integration-test to test scenario like create rental records. update rental records
+To run integration test, there must be docker installed on the machine.
+
+To write integration-tests, TestContainers has been used. More about test container here - www.testcontainers.org
